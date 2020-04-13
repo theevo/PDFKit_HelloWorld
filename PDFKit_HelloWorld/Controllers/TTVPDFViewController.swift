@@ -9,7 +9,12 @@
 import UIKit
 import PDFKit
 
-class TTVPDFViewController: UIViewController {
+class TTVPDFViewController: UIViewController, UITextFieldDelegate {
+    
+    // MARK: - Properties
+    
+    var annotationText = "Hello world"
+    
     
     // MARK: - Outlets
     
@@ -21,7 +26,8 @@ class TTVPDFViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         loadSamplePDF()
-        writeHello()
+        askUserForText()
+//        writeAnnotation()
     }
     
     
@@ -40,14 +46,41 @@ class TTVPDFViewController: UIViewController {
         }
     }
     
-    func writeHello() {
+    func askUserForText() {
+        let alert = UIAlertController(title: "PDF Annotation", message: "Write something", preferredStyle: .alert)
+        
+        alert.addTextField { (textField) in
+            textField.delegate = self
+            textField.placeholder = "Hey Jude"
+            textField.autocorrectionType = .yes
+            textField.autocapitalizationType = .sentences
+        }
+        
+        let saveButton = UIAlertAction(title: "Save", style: .default) { (_) in
+            guard let body = alert.textFields?.first?.text,
+                !body.isEmpty else { return }
+            
+            self.annotationText = body
+            self.writeAnnotation()
+        }
+        alert.addAction(saveButton)
+        
+        let cancelButton = UIAlertAction(title: "nvm", style: .cancel, handler: nil)
+        alert.addAction(cancelButton)
+        
+        DispatchQueue.main.async {
+            self.present(alert, animated: true)
+        }
+    }
+    
+    func writeAnnotation() {
         guard let document = pdfView.document else { return }
         
         let firstPage = document.page(at: 0)
         
         let annotation = PDFAnnotation(bounds: CGRect(x: 200, y: 300, width: 300, height: 100), forType: .freeText, withProperties: nil)
         
-        annotation.contents = "Hello world"
+        annotation.contents = annotationText
         
         annotation.font = UIFont.systemFont(ofSize: 45.0)
         
