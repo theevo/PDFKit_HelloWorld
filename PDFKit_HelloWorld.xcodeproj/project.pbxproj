@@ -9,21 +9,23 @@
 /* Begin PBXBuildFile section */
 		AC8B6C672444F11F002A6F28 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = AC8B6C662444F11F002A6F28 /* AppDelegate.swift */; };
 		AC8B6C692444F11F002A6F28 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = AC8B6C682444F11F002A6F28 /* SceneDelegate.swift */; };
-		AC8B6C6B2444F11F002A6F28 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = AC8B6C6A2444F11F002A6F28 /* ViewController.swift */; };
 		AC8B6C6E2444F11F002A6F28 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = AC8B6C6C2444F11F002A6F28 /* Main.storyboard */; };
 		AC8B6C702444F122002A6F28 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = AC8B6C6F2444F122002A6F28 /* Assets.xcassets */; };
 		AC8B6C732444F122002A6F28 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = AC8B6C712444F122002A6F28 /* LaunchScreen.storyboard */; };
+		AC8B6C7F2444F88B002A6F28 /* TTVPDFViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = AC8B6C7E2444F88B002A6F28 /* TTVPDFViewController.swift */; };
+		AC8B6C812444FD1D002A6F28 /* sample.pdf in Resources */ = {isa = PBXBuildFile; fileRef = AC8B6C802444FD1D002A6F28 /* sample.pdf */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
 		AC8B6C632444F11F002A6F28 /* PDFKit_HelloWorld.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = PDFKit_HelloWorld.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		AC8B6C662444F11F002A6F28 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		AC8B6C682444F11F002A6F28 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
-		AC8B6C6A2444F11F002A6F28 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
 		AC8B6C6D2444F11F002A6F28 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		AC8B6C6F2444F122002A6F28 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		AC8B6C722444F122002A6F28 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		AC8B6C742444F122002A6F28 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		AC8B6C7E2444F88B002A6F28 /* TTVPDFViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TTVPDFViewController.swift; sourceTree = "<group>"; };
+		AC8B6C802444FD1D002A6F28 /* sample.pdf */ = {isa = PBXFileReference; lastKnownFileType = image.pdf; path = sample.pdf; sourceTree = SOURCE_ROOT; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -56,15 +58,40 @@
 		AC8B6C652444F11F002A6F28 /* PDFKit_HelloWorld */ = {
 			isa = PBXGroup;
 			children = (
+				AC8B6C7D2444F49E002A6F28 /* Controllers */,
+				AC8B6C7A2444F471002A6F28 /* Storyboard */,
+				AC8B6C7C2444F485002A6F28 /* Resources */,
+			);
+			path = PDFKit_HelloWorld;
+			sourceTree = "<group>";
+		};
+		AC8B6C7A2444F471002A6F28 /* Storyboard */ = {
+			isa = PBXGroup;
+			children = (
+				AC8B6C6C2444F11F002A6F28 /* Main.storyboard */,
+			);
+			path = Storyboard;
+			sourceTree = "<group>";
+		};
+		AC8B6C7C2444F485002A6F28 /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				AC8B6C802444FD1D002A6F28 /* sample.pdf */,
 				AC8B6C662444F11F002A6F28 /* AppDelegate.swift */,
 				AC8B6C682444F11F002A6F28 /* SceneDelegate.swift */,
-				AC8B6C6A2444F11F002A6F28 /* ViewController.swift */,
-				AC8B6C6C2444F11F002A6F28 /* Main.storyboard */,
 				AC8B6C6F2444F122002A6F28 /* Assets.xcassets */,
 				AC8B6C712444F122002A6F28 /* LaunchScreen.storyboard */,
 				AC8B6C742444F122002A6F28 /* Info.plist */,
 			);
-			path = PDFKit_HelloWorld;
+			path = Resources;
+			sourceTree = "<group>";
+		};
+		AC8B6C7D2444F49E002A6F28 /* Controllers */ = {
+			isa = PBXGroup;
+			children = (
+				AC8B6C7E2444F88B002A6F28 /* TTVPDFViewController.swift */,
+			);
+			path = Controllers;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -125,6 +152,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				AC8B6C812444FD1D002A6F28 /* sample.pdf in Resources */,
 				AC8B6C732444F122002A6F28 /* LaunchScreen.storyboard in Resources */,
 				AC8B6C702444F122002A6F28 /* Assets.xcassets in Resources */,
 				AC8B6C6E2444F11F002A6F28 /* Main.storyboard in Resources */,
@@ -138,7 +166,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				AC8B6C6B2444F11F002A6F28 /* ViewController.swift in Sources */,
+				AC8B6C7F2444F88B002A6F28 /* TTVPDFViewController.swift in Sources */,
 				AC8B6C672444F11F002A6F28 /* AppDelegate.swift in Sources */,
 				AC8B6C692444F11F002A6F28 /* SceneDelegate.swift in Sources */,
 			);
@@ -286,7 +314,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = B76C7733HZ;
-				INFOPLIST_FILE = PDFKit_HelloWorld/Info.plist;
+				INFOPLIST_FILE = PDFKit_HelloWorld/Resources/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -304,7 +332,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = B76C7733HZ;
-				INFOPLIST_FILE = PDFKit_HelloWorld/Info.plist;
+				INFOPLIST_FILE = PDFKit_HelloWorld/Resources/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
