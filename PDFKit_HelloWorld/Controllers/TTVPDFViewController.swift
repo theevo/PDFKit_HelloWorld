@@ -11,11 +11,22 @@ import PDFKit
 
 class TTVPDFViewController: UIViewController {
     
+    // MARK: - Outlets
+    
     @IBOutlet weak var pdfView: PDFView!
+    
+    
+    // MARK: - Lifecycle
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+        loadSamplePDF()
+    }
+    
+    
+    // MARK: - Helper methods
+    
+    func loadSamplePDF() {
         if let path = Bundle.main.path(forResource: "sample", ofType: "pdf") { // read file name sample.pdf
             let url = URL(fileURLWithPath: path)
             if let pdfDocument = PDFDocument(url: url) {
@@ -26,8 +37,6 @@ class TTVPDFViewController: UIViewController {
             }
         }
     }
-    
-
     
 
 }
