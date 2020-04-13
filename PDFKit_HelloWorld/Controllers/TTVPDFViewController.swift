@@ -21,6 +21,7 @@ class TTVPDFViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         loadSamplePDF()
+        writeHello()
     }
     
     
@@ -34,8 +35,28 @@ class TTVPDFViewController: UIViewController {
                 pdfView.displayMode = .singlePageContinuous
                 pdfView.displayDirection = .vertical
                 pdfView.document = pdfDocument
+                pdfView.backgroundColor = .black
             }
         }
+    }
+    
+    func writeHello() {
+        guard let document = pdfView.document else { return }
+        
+        let firstPage = document.page(at: 0)
+        
+        let annotation = PDFAnnotation(bounds: CGRect(x: 200, y: 300, width: 300, height: 100), forType: .freeText, withProperties: nil)
+        
+        annotation.contents = "Hello world"
+        
+        annotation.font = UIFont.systemFont(ofSize: 45.0)
+        
+        annotation.fontColor = .blue
+        
+        annotation.color = .clear
+        
+        firstPage?.addAnnotation(annotation)
+        
     }
     
 
