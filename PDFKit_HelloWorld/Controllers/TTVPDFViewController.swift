@@ -3,7 +3,7 @@
 //  PDFKit_HelloWorld
 //
 //  Created by Theo Vora on 4/13/20.
-//  Copyright © 2020 Theo Vora. All rights reserved.
+//  Copyright © 2020 Joy Bending. All rights reserved.
 //
 
 import UIKit
@@ -26,9 +26,10 @@ class TTVPDFViewController: UIViewController, UITextFieldDelegate {
     override func viewDidLoad() {
         super.viewDidLoad()
         loadSamplePDF()
-        askUserForText()
-//        writeAnnotation()
+//        askUserForText()
     }
+    
+    
     
     
     // MARK: - Helper methods
@@ -38,7 +39,7 @@ class TTVPDFViewController: UIViewController, UITextFieldDelegate {
             let url = URL(fileURLWithPath: path)
             if let pdfDocument = PDFDocument(url: url) {
                 pdfView.autoScales = true
-                pdfView.displayMode = .singlePageContinuous
+                pdfView.displayMode = .singlePage
                 pdfView.displayDirection = .vertical
                 pdfView.document = pdfDocument
                 pdfView.backgroundColor = .black
