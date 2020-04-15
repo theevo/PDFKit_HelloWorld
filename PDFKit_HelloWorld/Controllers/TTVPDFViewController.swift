@@ -18,6 +18,7 @@ class TTVPDFViewController: UIViewController, UITextFieldDelegate {
     
     // MARK: - Outlets
     
+    @IBOutlet weak var youTapLabel: UILabel!
     @IBOutlet weak var pdfView: PDFView!
     
     
@@ -27,12 +28,29 @@ class TTVPDFViewController: UIViewController, UITextFieldDelegate {
         super.viewDidLoad()
         loadSamplePDF()
 //        askUserForText()
+        
+        let gestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(updateLabel))
+        gestureRecognizer.numberOfTapsRequired = 1
+        pdfView.addGestureRecognizer(gestureRecognizer)
     }
     
     
     
     
     // MARK: - Helper methods
+    
+    @objc func updateLabel(_ sender: UITapGestureRecognizer) {
+        let tapLocation = sender.location(in: pdfView)
+        
+        youTapLabel.text = "\(tapLocation.prettyPrint())"
+        youTapLabel.alpha = 1.0
+        
+        UIView.animate(withDuration: 2.0) {
+            self.youTapLabel.alpha = 0.0
+        }
+        
+        
+    }
     
     func loadSamplePDF() {
         if let path = Bundle.main.path(forResource: "sample", ofType: "pdf") { // read file name sample.pdf

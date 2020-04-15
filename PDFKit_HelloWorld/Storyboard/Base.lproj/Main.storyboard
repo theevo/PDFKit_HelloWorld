@@ -16,14 +16,22 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Wzc-ef-sQz" customClass="PDFView">
-                                <rect key="frame" x="0.0" y="44" width="414" height="818"/>
+                                <rect key="frame" x="0.0" y="185" width="414" height="677"/>
                                 <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
                             </view>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="you tapped?" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="s9N-fq-o82">
+                                <rect key="frame" x="159.5" y="104" width="95" height="21"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
                         </subviews>
                         <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
                         <constraints>
-                            <constraint firstItem="Wzc-ef-sQz" firstAttribute="top" secondItem="6Tk-OE-BBY" secondAttribute="top" id="Py2-87-Spy"/>
+                            <constraint firstItem="s9N-fq-o82" firstAttribute="top" secondItem="6Tk-OE-BBY" secondAttribute="top" constant="60" id="Afe-GI-R5z"/>
+                            <constraint firstItem="Wzc-ef-sQz" firstAttribute="top" secondItem="s9N-fq-o82" secondAttribute="bottom" constant="60" id="TbT-hz-hck"/>
                             <constraint firstItem="6Tk-OE-BBY" firstAttribute="bottom" secondItem="Wzc-ef-sQz" secondAttribute="bottom" id="e3m-Al-rWQ"/>
+                            <constraint firstItem="s9N-fq-o82" firstAttribute="centerX" secondItem="6Tk-OE-BBY" secondAttribute="centerX" id="jhP-yM-9TS"/>
                             <constraint firstItem="Wzc-ef-sQz" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" id="r4I-Gd-uxa"/>
                             <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="Wzc-ef-sQz" secondAttribute="trailing" id="uAY-W4-0WG"/>
                         </constraints>
@@ -31,11 +39,12 @@
                     </view>
                     <connections>
                         <outlet property="pdfView" destination="Wzc-ef-sQz" id="fPn-FB-6em"/>
+                        <outlet property="youTapLabel" destination="s9N-fq-o82" id="zeO-Ko-cbc"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="139" y="139"/>
+            <point key="canvasLocation" x="137.68115942028987" y="138.61607142857142"/>
         </scene>
     </scenes>
 </document>
