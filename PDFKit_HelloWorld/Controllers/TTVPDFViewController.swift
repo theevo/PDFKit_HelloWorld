@@ -21,7 +21,7 @@ class TTVPDFViewController: UIViewController, UITextFieldDelegate {
     @IBOutlet weak var locationUIView: UILabel!
     @IBOutlet weak var pdfView: PDFView!
     @IBOutlet weak var pdfPageLocationLabel: UILabel!
-    
+    @IBOutlet weak var pdfViewLocationLabel: UILabel!
     
     
     // MARK: - Lifecycle
@@ -43,13 +43,6 @@ class TTVPDFViewController: UIViewController, UITextFieldDelegate {
     
     @objc func updateLabel(_ sender: UITapGestureRecognizer) {
         let tapLocation = sender.location(in: pdfView)
-        let tappedPDFPage = pdfView.page(for: tapLocation, nearest: true)
-        
-        if let pageNumber = tappedPDFPage?.label {
-            print(pageNumber)
-            pdfPageLocationLabel.text = "\(pageNumber)"
-        }
-        
         
         locationUIView.text = "\(tapLocation.prettyPrint())"
         locationUIView.alpha = 1.0
@@ -58,6 +51,21 @@ class TTVPDFViewController: UIViewController, UITextFieldDelegate {
             self.locationUIView.alpha = 0.0
         }
         
+        guard let tappedPDFPage = pdfView.page(for: tapLocation, nearest: true) else { return }
+        
+        if let pageNumber = tappedPDFPage.label {
+            print("Page #: \(pageNumber)")
+            pdfPageLocationLabel.text = "\(pageNumber)"
+        }
+        
+        let convertedPoint = pdfView.convert(tapLocation, to: tappedPDFPage)
+        
+        pdfViewLocationLabel.text = "\(convertedPoint.prettyPrint())"
+        pdfViewLocationLabel.alpha = 1.0
+        
+        UIView.animate(withDuration: 2.0) {
+            self.pdfViewLocationLabel.alpha = 0.0
+        }
         
     }
     
