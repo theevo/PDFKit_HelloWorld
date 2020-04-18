@@ -67,6 +67,7 @@ class TTVPDFViewController: UIViewController, UITextFieldDelegate {
             self.pdfViewLocationLabel.alpha = 0.0
         }
         
+        writeAnnotation(page: tappedPDFPage, at: convertedPoint)
     }
     
     func loadSamplePDF() {
@@ -97,7 +98,7 @@ class TTVPDFViewController: UIViewController, UITextFieldDelegate {
                 !body.isEmpty else { return }
             
             self.annotationText = body
-            self.writeAnnotation()
+//            self.writeAnnotation()
         }
         alert.addAction(saveButton)
         
@@ -109,12 +110,24 @@ class TTVPDFViewController: UIViewController, UITextFieldDelegate {
         }
     }
     
-    func writeAnnotation() {
+    func writeAnnotation(page: PDFPage, at point: CGPoint) {
         guard let document = pdfView.document else { return }
         
-        let firstPage = document.page(at: 0)
+        let thisPage = document.page(at: document.index(for: page))
         
-        let annotation = PDFAnnotation(bounds: CGRect(x: 200, y: 300, width: 300, height: 100), forType: .freeText, withProperties: nil)
+        let rect = CGRect(x: point.x, y: point.y, width: 300, height: 46)
+        
+        let annotation = PDFAnnotation(bounds: rect, forType: .freeText, withProperties: nil)
+        
+        // attempted to use empty initializer for destination setter, but unsucessful
+//        let annotation = PDFAnnotation()
+//        annotation.type = PDFAnnotationSubtype.freeText.rawValue
+        
+        // WORTHLESS POS
+        // destination setter does not work with memberwise initializer. returns nil
+        // doesn't work for empty initializer either.
+//        let destinationOnPDF = PDFDestination(page: page, at: point)
+//        annotation.destination = destinationOnPDF
         
         annotation.contents = annotationText
         
@@ -124,7 +137,10 @@ class TTVPDFViewController: UIViewController, UITextFieldDelegate {
         
         annotation.color = .clear
         
-        firstPage?.addAnnotation(annotation)
+        //        annotation.border = PDFBorder()
+        
+        thisPage?.addAnnotation(annotation)
+        
         
     }
     
