@@ -3,7 +3,7 @@
 //  PDFKit_HelloWorld
 //
 //  Created by Theo Vora on 4/13/20.
-//  Copyright © 2020 Theo Vora. All rights reserved.
+//  Copyright © 2020 Joy Bending. All rights reserved.
 //
 
 import UIKit

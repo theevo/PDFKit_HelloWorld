@@ -3,7 +3,7 @@
 //  PDFKit_HelloWorld
 //
 //  Created by Theo Vora on 4/13/20.
-//  Copyright © 2020 Theo Vora. All rights reserved.
+//  Copyright © 2020 Joy Bending. All rights reserved.
 //
 
 import UIKit
@@ -18,7 +18,10 @@ class TTVPDFViewController: UIViewController, UITextFieldDelegate {
     
     // MARK: - Outlets
     
+    @IBOutlet weak var locationUIView: UILabel!
     @IBOutlet weak var pdfView: PDFView!
+    @IBOutlet weak var pdfPageLocationLabel: UILabel!
+    @IBOutlet weak var pdfViewLocationLabel: UILabel!
     
     
     // MARK: - Lifecycle
@@ -26,19 +29,53 @@ class TTVPDFViewController: UIViewController, UITextFieldDelegate {
     override func viewDidLoad() {
         super.viewDidLoad()
         loadSamplePDF()
-        askUserForText()
-//        writeAnnotation()
+        //        askUserForText()
+        
+        let gestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(updateLabel))
+        gestureRecognizer.numberOfTapsRequired = 1
+        pdfView.addGestureRecognizer(gestureRecognizer)
     }
     
     
+    
+    
     // MARK: - Helper methods
+    
+    @objc func updateLabel(_ sender: UITapGestureRecognizer) {
+        let tapLocation = sender.location(in: pdfView)
+        
+        locationUIView.text = "\(tapLocation.prettyPrint())"
+        locationUIView.alpha = 1.0
+        
+        UIView.animate(withDuration: 2.0) {
+            self.locationUIView.alpha = 0.0
+        }
+        
+        guard let tappedPDFPage = pdfView.page(for: tapLocation, nearest: true) else { return }
+        
+        if let pageNumber = tappedPDFPage.label {
+            print("Page #: \(pageNumber)")
+            pdfPageLocationLabel.text = "\(pageNumber)"
+        }
+        
+        let convertedPoint = pdfView.convert(tapLocation, to: tappedPDFPage)
+        
+        pdfViewLocationLabel.text = "\(convertedPoint.prettyPrint())"
+        pdfViewLocationLabel.alpha = 1.0
+        
+        UIView.animate(withDuration: 2.0) {
+            self.pdfViewLocationLabel.alpha = 0.0
+        }
+        
+        writeAnnotation(page: tappedPDFPage, at: convertedPoint)
+    }
     
     func loadSamplePDF() {
         if let path = Bundle.main.path(forResource: "sample", ofType: "pdf") { // read file name sample.pdf
             let url = URL(fileURLWithPath: path)
             if let pdfDocument = PDFDocument(url: url) {
                 pdfView.autoScales = true
-                pdfView.displayMode = .singlePageContinuous
+                pdfView.displayMode = .singlePage
                 pdfView.displayDirection = .vertical
                 pdfView.document = pdfDocument
                 pdfView.backgroundColor = .black
@@ -61,7 +98,7 @@ class TTVPDFViewController: UIViewController, UITextFieldDelegate {
                 !body.isEmpty else { return }
             
             self.annotationText = body
-            self.writeAnnotation()
+//            self.writeAnnotation()
         }
         alert.addAction(saveButton)
         
@@ -73,12 +110,24 @@ class TTVPDFViewController: UIViewController, UITextFieldDelegate {
         }
     }
     
-    func writeAnnotation() {
+    func writeAnnotation(page: PDFPage, at point: CGPoint) {
         guard let document = pdfView.document else { return }
         
-        let firstPage = document.page(at: 0)
+        let thisPage = document.page(at: document.index(for: page))
         
-        let annotation = PDFAnnotation(bounds: CGRect(x: 200, y: 300, width: 300, height: 100), forType: .freeText, withProperties: nil)
+        let rect = CGRect(x: point.x, y: point.y, width: 300, height: 46)
+        
+        let annotation = PDFAnnotation(bounds: rect, forType: .freeText, withProperties: nil)
+        
+        // attempted to use empty initializer for destination setter, but unsucessful
+//        let annotation = PDFAnnotation()
+//        annotation.type = PDFAnnotationSubtype.freeText.rawValue
+        
+        // WORTHLESS POS
+        // destination setter does not work with memberwise initializer. returns nil
+        // doesn't work for empty initializer either.
+//        let destinationOnPDF = PDFDestination(page: page, at: point)
+//        annotation.destination = destinationOnPDF
         
         annotation.contents = annotationText
         
@@ -88,9 +137,12 @@ class TTVPDFViewController: UIViewController, UITextFieldDelegate {
         
         annotation.color = .clear
         
-        firstPage?.addAnnotation(annotation)
+        //        annotation.border = PDFBorder()
+        
+        thisPage?.addAnnotation(annotation)
+        
         
     }
     
-
+    
 }
