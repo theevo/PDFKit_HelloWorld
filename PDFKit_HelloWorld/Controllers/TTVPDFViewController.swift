@@ -117,7 +117,7 @@ class TTVPDFViewController: UIViewController, UITextFieldDelegate {
         
         let thisPage = document.page(at: document.index(for: page))
         
-        let rect = CGRect(x: point.x, y: point.y, width: 300, height: 46)
+        let rect = CGRect(x: point.x, y: point.y, width: 125, height: 46)
         
         let annotation = PDFAnnotation(bounds: rect, forType: .freeText, withProperties: nil)
         
@@ -133,9 +133,15 @@ class TTVPDFViewController: UIViewController, UITextFieldDelegate {
         
         annotation.contents = annotationText
         
-        annotation.font = UIFont.systemFont(ofSize: 45.0)
+        annotation.font = UIFont.systemFont(ofSize: 20.0)
         
         annotation.fontColor = .blue
+        
+        let border = PDFBorder()
+        border.style = .solid
+        border.lineWidth = 3.0
+        
+        annotation.border = border
         
         annotation.color = .clear
         
