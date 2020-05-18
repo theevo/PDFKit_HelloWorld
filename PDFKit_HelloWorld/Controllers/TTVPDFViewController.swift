@@ -14,14 +14,14 @@ class TTVPDFViewController: UIViewController, UITextFieldDelegate {
     // MARK: - Properties
     
     var annotationText = "Hello world"
-    var fontSize: CGFloat = 14.0
+    var fontSize: CGFloat = 15.0
     
     
     // MARK: - Computed Properties
     
     var annotationTextHeight: CGFloat {
         get {
-            return fontSize * 1.5
+            return fontSize * 1.3
         }
     }
     
@@ -31,7 +31,7 @@ class TTVPDFViewController: UIViewController, UITextFieldDelegate {
             
             guard length > 0 else { return 25.0 }
             
-            let width = CGFloat(integerLiteral: length) * 10.0
+            let width = CGFloat(integerLiteral: length) * 11
             
             return width
         }
@@ -137,7 +137,9 @@ class TTVPDFViewController: UIViewController, UITextFieldDelegate {
         
         annotation.contents = annotationText
         
-        annotation.font = UIFont.systemFont(ofSize: fontSize)
+        annotation.font = UIFont(name: "Courier", size: fontSize)
+        
+        print(annotation.font?.fontName)
         
         annotation.fontColor = .blue
         
