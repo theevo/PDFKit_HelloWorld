@@ -33,8 +33,6 @@ class TTVPDFViewController: UIViewController, UITextFieldDelegate {
             
             let width = CGFloat(integerLiteral: length) * 10.0
             
-            print("width = \(width)")
-            
             return width
         }
     }
@@ -72,10 +70,6 @@ class TTVPDFViewController: UIViewController, UITextFieldDelegate {
         locationUIView.text = "\(tapLocation.prettyPrint())"
         locationUIView.alpha = 1.0
         
-//        UIView.animate(withDuration: 2.0) {
-//            self.locationUIView.alpha = 0.0
-//        }
-        
         guard let tappedPDFPage = pdfView.page(for: tapLocation, nearest: true) else { return }
         
         if let pageNumber = tappedPDFPage.label {
@@ -87,10 +81,6 @@ class TTVPDFViewController: UIViewController, UITextFieldDelegate {
         
         pdfViewLocationLabel.text = "\(convertedPoint.prettyPrint())"
         pdfViewLocationLabel.alpha = 1.0
-        
-//        UIView.animate(withDuration: 2.0) {
-//            self.pdfViewLocationLabel.alpha = 0.0
-//        }
         
         askUserForText(page: tappedPDFPage, at: convertedPoint)
     }
@@ -145,16 +135,6 @@ class TTVPDFViewController: UIViewController, UITextFieldDelegate {
         
         let annotation = PDFAnnotation(bounds: rect, forType: .freeText, withProperties: nil)
         
-        // attempted to use empty initializer for destination setter, but unsucessful
-//        let annotation = PDFAnnotation()
-//        annotation.type = PDFAnnotationSubtype.freeText.rawValue
-        
-        // WORTHLESS POS
-        // destination setter does not work with memberwise initializer. returns nil
-        // doesn't work for empty initializer either.
-//        let destinationOnPDF = PDFDestination(page: page, at: point)
-//        annotation.destination = destinationOnPDF
-        
         annotation.contents = annotationText
         
         annotation.font = UIFont.systemFont(ofSize: fontSize)
@@ -169,12 +149,6 @@ class TTVPDFViewController: UIViewController, UITextFieldDelegate {
         
         annotation.color = .clear
         
-        //        annotation.border = PDFBorder()
-        
         thisPage?.addAnnotation(annotation)
-        
-        
     }
-    
-    
 }

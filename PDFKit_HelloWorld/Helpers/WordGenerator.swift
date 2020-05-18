@@ -24,7 +24,7 @@ class WordGenerator {
                 self.wordsCount = self.words.count
                 return
                 
-            } catch { // contentsOfFile throws an error
+            } catch {
                 print("Error: \(error)")
             }
         }
