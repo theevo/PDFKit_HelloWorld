@@ -14,6 +14,30 @@ class TTVPDFViewController: UIViewController, UITextFieldDelegate {
     // MARK: - Properties
     
     var annotationText = "Hello world"
+    var fontSize: CGFloat = 14.0
+    
+    
+    // MARK: - Computed Properties
+    
+    var annotationTextHeight: CGFloat {
+        get {
+            return fontSize * 1.5
+        }
+    }
+    
+    var annotationTextWidth: CGFloat {
+        get {
+            let length = annotationText.count
+            
+            guard length > 0 else { return 25.0 }
+            
+            let width = CGFloat(integerLiteral: length) * 10.0
+            
+            print("width = \(width)")
+            
+            return width
+        }
+    }
     
     
     // MARK: - Outlets
@@ -89,7 +113,7 @@ class TTVPDFViewController: UIViewController, UITextFieldDelegate {
         
         alert.addTextField { (textField) in
             textField.delegate = self
-            textField.text = "Hey Jude"
+            textField.text = WordGenerator.shared.gimme()
             textField.autocorrectionType = .no
             textField.autocapitalizationType = .sentences
         }
@@ -117,7 +141,7 @@ class TTVPDFViewController: UIViewController, UITextFieldDelegate {
         
         let thisPage = document.page(at: document.index(for: page))
         
-        let rect = CGRect(x: point.x, y: point.y, width: 125, height: 46)
+        let rect = CGRect(x: point.x, y: point.y, width: annotationTextWidth, height: annotationTextHeight)
         
         let annotation = PDFAnnotation(bounds: rect, forType: .freeText, withProperties: nil)
         
@@ -133,7 +157,7 @@ class TTVPDFViewController: UIViewController, UITextFieldDelegate {
         
         annotation.contents = annotationText
         
-        annotation.font = UIFont.systemFont(ofSize: 20.0)
+        annotation.font = UIFont.systemFont(ofSize: fontSize)
         
         annotation.fontColor = .blue
         
