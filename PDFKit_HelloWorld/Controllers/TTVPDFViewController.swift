@@ -29,17 +29,18 @@ class TTVPDFViewController: UIViewController, UITextFieldDelegate {
     override func viewDidLoad() {
         super.viewDidLoad()
         loadSamplePDF()
-        //        askUserForText()
         
+        recognizeTaps()
+    }
+    
+    
+    // MARK: - Helper methods
+    
+    func recognizeTaps() {
         let gestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(updateLabel))
         gestureRecognizer.numberOfTapsRequired = 1
         pdfView.addGestureRecognizer(gestureRecognizer)
     }
-    
-    
-    
-    
-    // MARK: - Helper methods
     
     @objc func updateLabel(_ sender: UITapGestureRecognizer) {
         let tapLocation = sender.location(in: pdfView)
@@ -47,9 +48,9 @@ class TTVPDFViewController: UIViewController, UITextFieldDelegate {
         locationUIView.text = "\(tapLocation.prettyPrint())"
         locationUIView.alpha = 1.0
         
-        UIView.animate(withDuration: 2.0) {
-            self.locationUIView.alpha = 0.0
-        }
+//        UIView.animate(withDuration: 2.0) {
+//            self.locationUIView.alpha = 0.0
+//        }
         
         guard let tappedPDFPage = pdfView.page(for: tapLocation, nearest: true) else { return }
         
@@ -63,11 +64,11 @@ class TTVPDFViewController: UIViewController, UITextFieldDelegate {
         pdfViewLocationLabel.text = "\(convertedPoint.prettyPrint())"
         pdfViewLocationLabel.alpha = 1.0
         
-        UIView.animate(withDuration: 2.0) {
-            self.pdfViewLocationLabel.alpha = 0.0
-        }
+//        UIView.animate(withDuration: 2.0) {
+//            self.pdfViewLocationLabel.alpha = 0.0
+//        }
         
-        writeAnnotation(page: tappedPDFPage, at: convertedPoint)
+        askUserForText(page: tappedPDFPage, at: convertedPoint)
     }
     
     func loadSamplePDF() {
@@ -83,13 +84,13 @@ class TTVPDFViewController: UIViewController, UITextFieldDelegate {
         }
     }
     
-    func askUserForText() {
+    func askUserForText(page: PDFPage, at point: CGPoint) {
         let alert = UIAlertController(title: "PDF Annotation", message: "Write something", preferredStyle: .alert)
         
         alert.addTextField { (textField) in
             textField.delegate = self
-            textField.placeholder = "Hey Jude"
-            textField.autocorrectionType = .yes
+            textField.text = "Hey Jude"
+            textField.autocorrectionType = .no
             textField.autocapitalizationType = .sentences
         }
         
@@ -98,7 +99,8 @@ class TTVPDFViewController: UIViewController, UITextFieldDelegate {
                 !body.isEmpty else { return }
             
             self.annotationText = body
-//            self.writeAnnotation()
+            
+            self.writeAnnotation(page: page, at: point)
         }
         alert.addAction(saveButton)
         
