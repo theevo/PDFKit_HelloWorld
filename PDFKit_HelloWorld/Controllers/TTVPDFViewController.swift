@@ -14,6 +14,28 @@ class TTVPDFViewController: UIViewController, UITextFieldDelegate {
     // MARK: - Properties
     
     var annotationText = "Hello world"
+    var fontSize: CGFloat = 15.0
+    
+    
+    // MARK: - Computed Properties
+    
+    var annotationTextHeight: CGFloat {
+        get {
+            return fontSize * 1.3
+        }
+    }
+    
+    var annotationTextWidth: CGFloat {
+        get {
+            let length = annotationText.count
+            
+            guard length > 0 else { return 25.0 }
+            
+            let width = CGFloat(integerLiteral: length) * 11
+            
+            return width
+        }
+    }
     
     
     // MARK: - Outlets
@@ -29,27 +51,24 @@ class TTVPDFViewController: UIViewController, UITextFieldDelegate {
     override func viewDidLoad() {
         super.viewDidLoad()
         loadSamplePDF()
-        //        askUserForText()
         
+        recognizeTaps()
+    }
+    
+    
+    // MARK: - Helper methods
+    
+    func recognizeTaps() {
         let gestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(updateLabel))
         gestureRecognizer.numberOfTapsRequired = 1
         pdfView.addGestureRecognizer(gestureRecognizer)
     }
-    
-    
-    
-    
-    // MARK: - Helper methods
     
     @objc func updateLabel(_ sender: UITapGestureRecognizer) {
         let tapLocation = sender.location(in: pdfView)
         
         locationUIView.text = "\(tapLocation.prettyPrint())"
         locationUIView.alpha = 1.0
-        
-        UIView.animate(withDuration: 2.0) {
-            self.locationUIView.alpha = 0.0
-        }
         
         guard let tappedPDFPage = pdfView.page(for: tapLocation, nearest: true) else { return }
         
@@ -63,11 +82,7 @@ class TTVPDFViewController: UIViewController, UITextFieldDelegate {
         pdfViewLocationLabel.text = "\(convertedPoint.prettyPrint())"
         pdfViewLocationLabel.alpha = 1.0
         
-        UIView.animate(withDuration: 2.0) {
-            self.pdfViewLocationLabel.alpha = 0.0
-        }
-        
-        writeAnnotation(page: tappedPDFPage, at: convertedPoint)
+        askUserForText(page: tappedPDFPage, at: convertedPoint)
     }
     
     func loadSamplePDF() {
@@ -83,13 +98,13 @@ class TTVPDFViewController: UIViewController, UITextFieldDelegate {
         }
     }
     
-    func askUserForText() {
+    func askUserForText(page: PDFPage, at point: CGPoint) {
         let alert = UIAlertController(title: "PDF Annotation", message: "Write something", preferredStyle: .alert)
         
         alert.addTextField { (textField) in
             textField.delegate = self
-            textField.placeholder = "Hey Jude"
-            textField.autocorrectionType = .yes
+            textField.text = WordGenerator.shared.gimme()
+            textField.autocorrectionType = .no
             textField.autocapitalizationType = .sentences
         }
         
@@ -98,7 +113,8 @@ class TTVPDFViewController: UIViewController, UITextFieldDelegate {
                 !body.isEmpty else { return }
             
             self.annotationText = body
-//            self.writeAnnotation()
+            
+            self.writeAnnotation(page: page, at: point)
         }
         alert.addAction(saveButton)
         
@@ -115,34 +131,26 @@ class TTVPDFViewController: UIViewController, UITextFieldDelegate {
         
         let thisPage = document.page(at: document.index(for: page))
         
-        let rect = CGRect(x: point.x, y: point.y, width: 300, height: 46)
+        let rect = CGRect(x: point.x, y: point.y, width: annotationTextWidth, height: annotationTextHeight)
         
         let annotation = PDFAnnotation(bounds: rect, forType: .freeText, withProperties: nil)
         
-        // attempted to use empty initializer for destination setter, but unsucessful
-//        let annotation = PDFAnnotation()
-//        annotation.type = PDFAnnotationSubtype.freeText.rawValue
-        
-        // WORTHLESS POS
-        // destination setter does not work with memberwise initializer. returns nil
-        // doesn't work for empty initializer either.
-//        let destinationOnPDF = PDFDestination(page: page, at: point)
-//        annotation.destination = destinationOnPDF
-        
         annotation.contents = annotationText
         
-        annotation.font = UIFont.systemFont(ofSize: 45.0)
+        annotation.font = UIFont(name: "Courier", size: fontSize)
+        
+        print(annotation.font?.fontName)
         
         annotation.fontColor = .blue
         
+        let border = PDFBorder()
+        border.style = .solid
+        border.lineWidth = 3.0
+        
+        annotation.border = border
+        
         annotation.color = .clear
         
-        //        annotation.border = PDFBorder()
-        
         thisPage?.addAnnotation(annotation)
-        
-        
     }
-    
-    
 }
