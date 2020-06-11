@@ -22,6 +22,7 @@
 /* Begin PBXFileReference section */
 		AC0B111D2473109E00792E8A /* WordGenerator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WordGenerator.swift; sourceTree = "<group>"; };
 		AC0B111F247310ED00792E8A /* words */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = words; sourceTree = "<group>"; };
+		AC5DE1D92492D05B00F7DB68 /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
 		AC8B6C632444F11F002A6F28 /* PDFKit_HelloWorld.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = PDFKit_HelloWorld.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		AC8B6C662444F11F002A6F28 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		AC8B6C682444F11F002A6F28 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -56,6 +57,7 @@
 		AC8B6C5A2444F11F002A6F28 = {
 			isa = PBXGroup;
 			children = (
+				AC5DE1D92492D05B00F7DB68 /* README.md */,
 				AC8B6C652444F11F002A6F28 /* PDFKit_HelloWorld */,
 				AC8B6C642444F11F002A6F28 /* Products */,
 			);

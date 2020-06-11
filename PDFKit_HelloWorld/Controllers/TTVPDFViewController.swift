@@ -9,7 +9,7 @@
 import UIKit
 import PDFKit
 
-class TTVPDFViewController: UIViewController, UITextFieldDelegate {
+class TTVPDFViewController: UIViewController, UITextFieldDelegate, PDFViewDelegate {
     
     // MARK: - Properties
     
@@ -73,7 +73,6 @@ class TTVPDFViewController: UIViewController, UITextFieldDelegate {
         guard let tappedPDFPage = pdfView.page(for: tapLocation, nearest: true) else { return }
         
         if let pageNumber = tappedPDFPage.label {
-            print("Page #: \(pageNumber)")
             pdfPageLocationLabel.text = "\(pageNumber)"
         }
         
@@ -82,7 +81,8 @@ class TTVPDFViewController: UIViewController, UITextFieldDelegate {
         pdfViewLocationLabel.text = "\(convertedPoint.prettyPrint())"
         pdfViewLocationLabel.alpha = 1.0
         
-        askUserForText(page: tappedPDFPage, at: convertedPoint)
+        zoomIn(to: convertedPoint, page: tappedPDFPage)
+//        askUserForText(page: tappedPDFPage, at: convertedPoint)
     }
     
     func loadSamplePDF() {
@@ -94,8 +94,16 @@ class TTVPDFViewController: UIViewController, UITextFieldDelegate {
                 pdfView.displayDirection = .vertical
                 pdfView.document = pdfDocument
                 pdfView.backgroundColor = .black
+//                pdfView.usePageViewController(false)
             }
         }
+    }
+    
+    func zoomIn(to: CGPoint, page: PDFPage) {
+        pdfView.scaleFactor = 5.0
+        
+        let rect = CGRect(origin: to, size: CGSize(width: 50, height: 50))
+        pdfView.go(to: rect, on: page)
     }
     
     func askUserForText(page: PDFPage, at point: CGPoint) {
@@ -115,10 +123,13 @@ class TTVPDFViewController: UIViewController, UITextFieldDelegate {
             self.annotationText = body
             
             self.writeAnnotation(page: page, at: point)
+//            self.resetScaleFactor()
         }
         alert.addAction(saveButton)
         
-        let cancelButton = UIAlertAction(title: "nvm", style: .cancel, handler: nil)
+        let cancelButton = UIAlertAction(title: "nvm", style: .cancel) { (_) in
+            self.resetZoom()
+        }
         alert.addAction(cancelButton)
         
         DispatchQueue.main.async {
@@ -126,7 +137,12 @@ class TTVPDFViewController: UIViewController, UITextFieldDelegate {
         }
     }
     
+    func resetZoom() {
+        pdfView.scaleFactor = pdfView.scaleFactorForSizeToFit
+    }
+    
     func writeAnnotation(page: PDFPage, at point: CGPoint) {
+        resetZoom()
         guard let document = pdfView.document else { return }
         
         let thisPage = document.page(at: document.index(for: page))
@@ -136,11 +152,7 @@ class TTVPDFViewController: UIViewController, UITextFieldDelegate {
         let annotation = PDFAnnotation(bounds: rect, forType: .freeText, withProperties: nil)
         
         annotation.contents = annotationText
-        
         annotation.font = UIFont(name: "Courier", size: fontSize)
-        
-        print(annotation.font?.fontName)
-        
         annotation.fontColor = .blue
         
         let border = PDFBorder()
