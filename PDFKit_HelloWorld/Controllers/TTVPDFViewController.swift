@@ -21,6 +21,7 @@ class TTVPDFViewController: UIViewController, UITextFieldDelegate, PDFViewDelega
             return fontSize * 5.0
         }
     }
+    var tapPoint: CGPoint?
     var annotationPoint: CGPoint?
     var annotationPage: PDFPage?
     
@@ -46,8 +47,9 @@ class TTVPDFViewController: UIViewController, UITextFieldDelegate, PDFViewDelega
     
     var guideBox: CGRect? {
         get {
-            guard let pt = annotationPoint else { return nil }
-            let guidePoint = pdfView.convert(pt, to: view)
+            guard let pt = annotationPoint,
+                let page = annotationPage else { return nil }
+            let guidePoint = pdfView.convert(pt, from: page)
             return CGRect(origin: guidePoint, size: CGSize(width: 500, height: 100))
         }
     }
@@ -81,6 +83,8 @@ class TTVPDFViewController: UIViewController, UITextFieldDelegate, PDFViewDelega
     
     @objc func handleTap(_ sender: UITapGestureRecognizer) {
         let tapLocation = sender.location(in: pdfView)
+        
+        tapPoint = tapLocation
         
         guard let tappedPDFPage = pdfView.page(for: tapLocation, nearest: true) else { return }
         
@@ -119,7 +123,7 @@ class TTVPDFViewController: UIViewController, UITextFieldDelegate, PDFViewDelega
         label.isUserInteractionEnabled = true
         guideLabel = label
         
-        view.addSubview(guideLabel!)
+        pdfView.addSubview(guideLabel!)
     }
     
     func loadSamplePDF() {
