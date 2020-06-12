@@ -15,7 +15,8 @@ class TTVPDFViewController: UIViewController, UITextFieldDelegate, PDFViewDelega
     
     var annotationText = "Hello world"
     var fontSize: CGFloat = 15.0
-    
+    var guideLabel: UILabel?
+    var touchPoint: CGPoint?
     
     // MARK: - Computed Properties
     
@@ -34,6 +35,14 @@ class TTVPDFViewController: UIViewController, UITextFieldDelegate, PDFViewDelega
             let width = CGFloat(integerLiteral: length) * 11
             
             return width
+        }
+    }
+    
+    var box: CGRect? {
+        get {
+            guard let pt = touchPoint else { return nil }
+            
+            return CGRect(origin: pt, size: CGSize(width: 100, height: 35))
         }
     }
     
@@ -67,6 +76,8 @@ class TTVPDFViewController: UIViewController, UITextFieldDelegate, PDFViewDelega
     @objc func updateLabel(_ sender: UITapGestureRecognizer) {
         let tapLocation = sender.location(in: pdfView)
         
+        touchPoint = tapLocation
+        
         locationUIView.text = "\(tapLocation.prettyPrint())"
         locationUIView.alpha = 1.0
         
@@ -81,8 +92,22 @@ class TTVPDFViewController: UIViewController, UITextFieldDelegate, PDFViewDelega
         pdfViewLocationLabel.text = "\(convertedPoint.prettyPrint())"
         pdfViewLocationLabel.alpha = 1.0
         
+        addGuideLabel()
         zoomIn(to: convertedPoint, page: tappedPDFPage)
 //        askUserForText(page: tappedPDFPage, at: convertedPoint)
+    }
+    
+    func addGuideLabel() {
+        guard let box = box else { return }
+        let label = UILabel(frame: box)
+        label.font = UIFont(descriptor: UIFontDescriptor(name: "Courier", size: CGFloat(integerLiteral: 15)), size: CGFloat(integerLiteral: 15))
+        label.text = annotationText
+        label.layer.borderColor = UIColor.systemPink.cgColor
+        label.layer.borderWidth = 2.0
+        label.isUserInteractionEnabled = true
+        guideLabel = label
+        
+        view.addSubview(guideLabel!)
     }
     
     func loadSamplePDF() {
