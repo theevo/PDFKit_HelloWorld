@@ -21,7 +21,8 @@ class TTVPDFViewController: UIViewController, UITextFieldDelegate, PDFViewDelega
             return fontSize * 5.0
         }
     }
-    var touchPoint: CGPoint?
+    var annotationPoint: CGPoint?
+    var annotationPage: PDFPage?
     
     // MARK: - Computed Properties
     
@@ -45,16 +46,16 @@ class TTVPDFViewController: UIViewController, UITextFieldDelegate, PDFViewDelega
     
     var guideBox: CGRect? {
         get {
-            guard let pt = touchPoint else { return nil }
-            
-            return CGRect(origin: pt, size: CGSize(width: 500, height: 100))
+            guard let pt = annotationPoint else { return nil }
+            let guidePoint = pdfView.convert(pt, to: view)
+            return CGRect(origin: guidePoint, size: CGSize(width: 500, height: 100))
         }
     }
     
     
     // MARK: - Outlets
     
-    @IBOutlet weak var locationUIView: UILabel!
+    @IBOutlet weak var locationGuide: UILabel!
     @IBOutlet weak var pdfView: PDFView!
     @IBOutlet weak var pdfPageLocationLabel: UILabel!
     @IBOutlet weak var pdfViewLocationLabel: UILabel!
@@ -81,26 +82,31 @@ class TTVPDFViewController: UIViewController, UITextFieldDelegate, PDFViewDelega
     @objc func handleTap(_ sender: UITapGestureRecognizer) {
         let tapLocation = sender.location(in: pdfView)
         
-        touchPoint = tapLocation
-        
-        locationUIView.text = "\(tapLocation.prettyPrint())"
-        locationUIView.alpha = 1.0
-        
         guard let tappedPDFPage = pdfView.page(for: tapLocation, nearest: true) else { return }
         
-        if let pageNumber = tappedPDFPage.label {
-            pdfPageLocationLabel.text = "\(pageNumber)"
+        annotationPage = tappedPDFPage
+        
+        annotationPoint = pdfView.convert(tapLocation, to: tappedPDFPage)
+        
+        updateCoordinates()
+        writeAnnotation()
+        zoomIn()
+//        askUserForText(page: tappedPDFPage, at: convertedPoint)
+    }
+    
+    func updateCoordinates() {
+        
+        if let annotationPoint = annotationPoint {
+            pdfViewLocationLabel.text = "\(annotationPoint.prettyPrint())"
         }
         
-        let convertedPoint = pdfView.convert(tapLocation, to: tappedPDFPage)
+        if let guidePoint = guideBox?.origin {
+            locationGuide.text = "\(guidePoint.prettyPrint())"
+        }
         
-        pdfViewLocationLabel.text = "\(convertedPoint.prettyPrint())"
-        pdfViewLocationLabel.alpha = 1.0
-        
-        addGuideLabel()
-        writeAnnotation(page: tappedPDFPage, at: convertedPoint)
-        zoomIn(to: convertedPoint, page: tappedPDFPage)
-//        askUserForText(page: tappedPDFPage, at: convertedPoint)
+        if let pageNumber = annotationPage?.label {
+            pdfPageLocationLabel.text = "\(pageNumber)"
+        }
     }
     
     func addGuideLabel() {
@@ -129,11 +135,15 @@ class TTVPDFViewController: UIViewController, UITextFieldDelegate, PDFViewDelega
         }
     }
     
-    func zoomIn(to: CGPoint, page: PDFPage) {
+    func zoomIn() {
+        guard let to = annotationPoint,
+            let page = annotationPage else { return }
+        
         pdfView.scaleFactor = 5.0
         
         let rect = CGRect(origin: to, size: CGSize(width: 50, height: 50))
         pdfView.go(to: rect, on: page)
+        addGuideLabel()
     }
     
     func askUserForText(page: PDFPage, at point: CGPoint) {
@@ -152,7 +162,7 @@ class TTVPDFViewController: UIViewController, UITextFieldDelegate, PDFViewDelega
             
             self.annotationText = body
             
-            self.writeAnnotation(page: page, at: point)
+            self.writeAnnotation()
         }
         alert.addAction(saveButton)
         
@@ -170,10 +180,9 @@ class TTVPDFViewController: UIViewController, UITextFieldDelegate, PDFViewDelega
         pdfView.scaleFactor = pdfView.scaleFactorForSizeToFit
     }
     
-    func writeAnnotation(page: PDFPage, at point: CGPoint) {
-        guard let document = pdfView.document else { return }
-        
-        let thisPage = document.page(at: document.index(for: page))
+    func writeAnnotation() {
+        guard let thisPage = annotationPage,
+        let point = annotationPoint else { return }
         
         let rect = CGRect(x: point.x, y: point.y, width: annotationTextWidth, height: annotationTextHeight)
         
@@ -191,6 +200,6 @@ class TTVPDFViewController: UIViewController, UITextFieldDelegate, PDFViewDelega
         
         annotation.color = .clear
         
-        thisPage?.addAnnotation(annotation)
+        thisPage.addAnnotation(annotation)
     }
 }
