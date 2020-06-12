@@ -86,7 +86,7 @@ class TTVPDFViewController: UIViewController, UITextFieldDelegate, PDFViewDelega
     }
     
     func loadSamplePDF() {
-        if let path = Bundle.main.path(forResource: "sample", ofType: "pdf") { // read file name sample.pdf
+        if let path = Bundle.main.path(forResource: "sample", ofType: "pdf") {
             let url = URL(fileURLWithPath: path)
             if let pdfDocument = PDFDocument(url: url) {
                 pdfView.autoScales = true
@@ -94,7 +94,6 @@ class TTVPDFViewController: UIViewController, UITextFieldDelegate, PDFViewDelega
                 pdfView.displayDirection = .vertical
                 pdfView.document = pdfDocument
                 pdfView.backgroundColor = .black
-//                pdfView.usePageViewController(false)
             }
         }
     }
@@ -123,7 +122,6 @@ class TTVPDFViewController: UIViewController, UITextFieldDelegate, PDFViewDelega
             self.annotationText = body
             
             self.writeAnnotation(page: page, at: point)
-//            self.resetScaleFactor()
         }
         alert.addAction(saveButton)
         
