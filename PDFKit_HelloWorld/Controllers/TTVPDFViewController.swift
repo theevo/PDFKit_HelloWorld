@@ -16,6 +16,11 @@ class TTVPDFViewController: UIViewController, UITextFieldDelegate, PDFViewDelega
     var annotationText = "Hello world"
     var fontSize: CGFloat = 15.0
     var guideLabel: UILabel?
+    var guideFontSize: CGFloat {
+        get {
+            return fontSize * 5.0
+        }
+    }
     var touchPoint: CGPoint?
     
     // MARK: - Computed Properties
@@ -38,11 +43,11 @@ class TTVPDFViewController: UIViewController, UITextFieldDelegate, PDFViewDelega
         }
     }
     
-    var box: CGRect? {
+    var guideBox: CGRect? {
         get {
             guard let pt = touchPoint else { return nil }
             
-            return CGRect(origin: pt, size: CGSize(width: 100, height: 35))
+            return CGRect(origin: pt, size: CGSize(width: 500, height: 100))
         }
     }
     
@@ -68,12 +73,12 @@ class TTVPDFViewController: UIViewController, UITextFieldDelegate, PDFViewDelega
     // MARK: - Helper methods
     
     func recognizeTaps() {
-        let gestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(updateLabel))
+        let gestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(handleTap))
         gestureRecognizer.numberOfTapsRequired = 1
         pdfView.addGestureRecognizer(gestureRecognizer)
     }
     
-    @objc func updateLabel(_ sender: UITapGestureRecognizer) {
+    @objc func handleTap(_ sender: UITapGestureRecognizer) {
         let tapLocation = sender.location(in: pdfView)
         
         touchPoint = tapLocation
@@ -93,14 +98,15 @@ class TTVPDFViewController: UIViewController, UITextFieldDelegate, PDFViewDelega
         pdfViewLocationLabel.alpha = 1.0
         
         addGuideLabel()
+        writeAnnotation(page: tappedPDFPage, at: convertedPoint)
         zoomIn(to: convertedPoint, page: tappedPDFPage)
 //        askUserForText(page: tappedPDFPage, at: convertedPoint)
     }
     
     func addGuideLabel() {
-        guard let box = box else { return }
+        guard let box = guideBox else { return }
         let label = UILabel(frame: box)
-        label.font = UIFont(descriptor: UIFontDescriptor(name: "Courier", size: CGFloat(integerLiteral: 15)), size: CGFloat(integerLiteral: 15))
+        label.font = UIFont(name: "Courier", size: guideFontSize)
         label.text = annotationText
         label.layer.borderColor = UIColor.systemPink.cgColor
         label.layer.borderWidth = 2.0
@@ -165,7 +171,6 @@ class TTVPDFViewController: UIViewController, UITextFieldDelegate, PDFViewDelega
     }
     
     func writeAnnotation(page: PDFPage, at point: CGPoint) {
-        resetZoom()
         guard let document = pdfView.document else { return }
         
         let thisPage = document.page(at: document.index(for: page))
