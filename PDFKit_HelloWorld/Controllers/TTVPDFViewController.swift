@@ -59,7 +59,7 @@ class TTVPDFViewController: UIViewController, UITextFieldDelegate, PDFViewDelega
     
     @IBOutlet weak var locationGuide: UILabel!
     @IBOutlet weak var pdfView: PDFView!
-    @IBOutlet weak var pdfPageLocationLabel: UILabel!
+    @IBOutlet weak var scale: UILabel!
     @IBOutlet weak var pdfViewLocationLabel: UILabel!
     
     
@@ -68,7 +68,7 @@ class TTVPDFViewController: UIViewController, UITextFieldDelegate, PDFViewDelega
     override func viewDidLoad() {
         super.viewDidLoad()
         loadSamplePDF()
-        
+        updateCoordinates()
         recognizeTaps()
     }
     
@@ -92,25 +92,19 @@ class TTVPDFViewController: UIViewController, UITextFieldDelegate, PDFViewDelega
         
         annotationPoint = pdfView.convert(tapLocation, to: tappedPDFPage)
         
-        updateCoordinates()
         writeAnnotation()
         zoomIn()
+        updateCoordinates()
 //        askUserForText(page: tappedPDFPage, at: convertedPoint)
     }
     
     func updateCoordinates() {
         
-        if let annotationPoint = annotationPoint {
-            pdfViewLocationLabel.text = "\(annotationPoint.prettyPrint())"
-        }
+        pdfViewLocationLabel.text = annotationPoint?.prettyPrint() ?? "not set"
         
-        if let guidePoint = guideBox?.origin {
-            locationGuide.text = "\(guidePoint.prettyPrint())"
-        }
+        locationGuide.text = guideBox?.origin.prettyPrint() ?? "not set"
         
-        if let pageNumber = annotationPage?.label {
-            pdfPageLocationLabel.text = "\(pageNumber)"
-        }
+        scale.text = "\(pdfView.scaleFactor)"
     }
     
     func addGuideLabel() {
@@ -143,9 +137,9 @@ class TTVPDFViewController: UIViewController, UITextFieldDelegate, PDFViewDelega
         guard let to = annotationPoint,
             let page = annotationPage else { return }
         
-        pdfView.scaleFactor = 5.0
+        pdfView.scaleFactor = 2.0
         
-        let rect = CGRect(origin: to, size: CGSize(width: 50, height: 50))
+        let rect = CGRect(x: to.x - 75, y: to.y, width: 75, height: 75)
         pdfView.go(to: rect, on: page)
         addGuideLabel()
     }

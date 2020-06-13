@@ -15,8 +15,8 @@
 		AC8B6C702444F122002A6F28 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = AC8B6C6F2444F122002A6F28 /* Assets.xcassets */; };
 		AC8B6C732444F122002A6F28 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = AC8B6C712444F122002A6F28 /* LaunchScreen.storyboard */; };
 		AC8B6C7F2444F88B002A6F28 /* TTVPDFViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = AC8B6C7E2444F88B002A6F28 /* TTVPDFViewController.swift */; };
-		AC8B6C812444FD1D002A6F28 /* sample.pdf in Resources */ = {isa = PBXBuildFile; fileRef = AC8B6C802444FD1D002A6F28 /* sample.pdf */; };
 		ACC405BC2447983F0044D6C3 /* CGPointExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = ACC405BB2447983F0044D6C3 /* CGPointExtension.swift */; };
+		ACF51F3C249449CB0073EE9D /* sample.pdf in Resources */ = {isa = PBXBuildFile; fileRef = ACF51F3B249449CB0073EE9D /* sample.pdf */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -31,8 +31,8 @@
 		AC8B6C722444F122002A6F28 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		AC8B6C742444F122002A6F28 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		AC8B6C7E2444F88B002A6F28 /* TTVPDFViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TTVPDFViewController.swift; sourceTree = "<group>"; };
-		AC8B6C802444FD1D002A6F28 /* sample.pdf */ = {isa = PBXFileReference; lastKnownFileType = image.pdf; path = sample.pdf; sourceTree = SOURCE_ROOT; };
 		ACC405BB2447983F0044D6C3 /* CGPointExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CGPointExtension.swift; sourceTree = "<group>"; };
+		ACF51F3B249449CB0073EE9D /* sample.pdf */ = {isa = PBXFileReference; lastKnownFileType = image.pdf; path = sample.pdf; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -94,8 +94,8 @@
 		AC8B6C7C2444F485002A6F28 /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				ACF51F3B249449CB0073EE9D /* sample.pdf */,
 				AC0B111F247310ED00792E8A /* words */,
-				AC8B6C802444FD1D002A6F28 /* sample.pdf */,
 				AC8B6C662444F11F002A6F28 /* AppDelegate.swift */,
 				AC8B6C682444F11F002A6F28 /* SceneDelegate.swift */,
 				AC8B6C6F2444F122002A6F28 /* Assets.xcassets */,
@@ -179,9 +179,9 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				AC8B6C812444FD1D002A6F28 /* sample.pdf in Resources */,
 				AC8B6C732444F122002A6F28 /* LaunchScreen.storyboard in Resources */,
 				AC8B6C702444F122002A6F28 /* Assets.xcassets in Resources */,
+				ACF51F3C249449CB0073EE9D /* sample.pdf in Resources */,
 				AC8B6C6E2444F11F002A6F28 /* Main.storyboard in Resources */,
 				AC0B1120247310ED00792E8A /* words in Resources */,
 			);
