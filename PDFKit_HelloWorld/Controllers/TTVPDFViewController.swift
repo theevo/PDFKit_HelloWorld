@@ -18,7 +18,7 @@ class TTVPDFViewController: UIViewController, UITextFieldDelegate, PDFViewDelega
     var guideLabel: UILabel?
     var guideFontSize: CGFloat {
         get {
-            return fontSize * 5.0
+            return fontSize * 2.0
         }
     }
     var tapPoint: CGPoint?
