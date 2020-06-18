@@ -18,7 +18,7 @@ class TTVPDFViewController: UIViewController, UITextFieldDelegate, PDFViewDelega
     var guideLabel: UILabel?
     var guideFontSize: CGFloat {
         get {
-            return fontSize * 5.0
+            return fontSize * 2.0
         }
     }
     var tapPoint: CGPoint?
@@ -50,7 +50,7 @@ class TTVPDFViewController: UIViewController, UITextFieldDelegate, PDFViewDelega
             guard let pt = annotationPoint,
                 let page = annotationPage else { return nil }
             let guidePoint = pdfView.convert(pt, from: page)
-            return CGRect(x: guidePoint.x + 10, y: guidePoint.y - 92, width: 604, height: 100)
+            return CGRect(x: guidePoint.x + 4, y: guidePoint.y - (annotationTextHeight * 2) + 2, width: annotationTextWidth * 2, height: annotationTextHeight * 2)
         }
     }
     
