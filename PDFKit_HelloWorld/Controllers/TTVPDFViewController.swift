@@ -88,7 +88,7 @@ class TTVPDFViewController: UIViewController, UITextFieldDelegate {
             guard let body = alert.textFields?.first?.text,
                 !body.isEmpty else { return }
             
-            PDFAnnotationController.addAnnotation(text: body, pdfPage: page, pdfPoint: point)
+            self.addAnnotation(text: body, pdfPage: page, pdfPoint: point)
             
 //            self.annotationText = body
             
@@ -104,33 +104,23 @@ class TTVPDFViewController: UIViewController, UITextFieldDelegate {
             self.present(alert, animated: true)
         }
     }
+}
+
+
+// MARK: - Undo & Redo
+extension TTVPDFViewController {
+    func addAnnotation(text: String, pdfPage: PDFPage, pdfPoint: CGPoint) {
+        let annotation = PDFAnnotationController.create(text: text, pdfPage: pdfPage, pdfPoint: pdfPoint)
+        
+        undoManager?.registerUndo(withTarget: self, handler: { (selfTarget) in
+            selfTarget.removeAnnotation(annotation: annotation)
+        })
+        undoManager?.setActionName("\(text.count > 10 ? text.prefix(7) + "..." : text )")
+    }
     
-//    func writeAnnotation(page: PDFPage, at point: CGPoint) {
-//        guard let document = pdfView.document else { return }
-//
-//        let thisPage = document.page(at: document.index(for: page))
-//
-//        let rect = CGRect(x: point.x, y: point.y, width: annotationTextWidth, height: annotationTextHeight)
-//
-//        PDFAnnotation.addAnnotation
-////        let annotation = PDFAnnotation(bounds: rect, forType: .freeText, withProperties: nil)
-////
-////        annotation.contents = annotationText
-////
-////        annotation.font = UIFont(name: "Courier", size: fontSize)
-////
-////        print(annotation.font?.fontName)
-////
-////        annotation.fontColor = .blue
-////
-////        let border = PDFBorder()
-////        border.style = .solid
-////        border.lineWidth = 3.0
-////
-////        annotation.border = border
-////
-////        annotation.color = .clear
-//
-//        thisPage?.addAnnotation(annotation)
-//    }
+    func removeAnnotation(annotation: PDFAnnotation) {
+        guard let page = annotation.page else { return }
+        
+        page.removeAnnotation(annotation)
+    }
 }

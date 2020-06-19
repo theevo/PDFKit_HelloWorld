@@ -41,7 +41,7 @@ class PDFAnnotationController {
     
     // MARK: - Public Functions
     
-    static func addAnnotation(text: String, pdfPage: PDFPage, pdfPoint: CGPoint) {
+    static func create(text: String, pdfPage: PDFPage, pdfPoint: CGPoint) -> PDFAnnotation {
         annotationText = text
         
         let rect = CGRect(x: pdfPoint.x, y: pdfPoint.y, width: annotationTextWidth, height: annotationTextHeight)
@@ -61,9 +61,11 @@ class PDFAnnotationController {
         }
         
         pdfPage.addAnnotation(annotation)
+        
+        return annotation
     }
     
-    static func removeAnnotation() {
+    static func destroy() {
         
     }
 }
