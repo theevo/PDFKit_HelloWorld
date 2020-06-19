@@ -32,7 +32,7 @@ class PDFAnnotationController {
             
             guard length > 0 else { return 25.0 }
             
-            let width = CGFloat(integerLiteral: length) * 11
+            let width = CGFloat(integerLiteral: length) * 12
             
             return width
         }
