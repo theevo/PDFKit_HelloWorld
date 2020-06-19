@@ -123,14 +123,14 @@ extension TTVPDFViewController {
         
         undoManager?.registerUndo(withTarget: self, handler: { (selfTarget) in
             selfTarget.addToUndo(annotation)
-            self.pdfView.layoutDocumentView()
+            PDFAnnotationController.restore(annotation)
         })
         undoManager?.setActionName(annotation.contents?.truncateIfNeeded() ?? "annotation")
         
         PDFAnnotationController.destroy(annotation)
     }
     
-    func redraw() {
+    func restore() {
 //        pdfView.layoutDocumentView()
     }
 }

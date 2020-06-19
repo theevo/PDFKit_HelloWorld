@@ -70,4 +70,10 @@ class PDFAnnotationController {
         
         page.removeAnnotation(annotation)
     }
+    
+    static func restore(_ annotation: PDFAnnotation) {
+        guard let page = annotation.page else { return }
+        
+        page.addAnnotation(annotation)
+    }
 }
