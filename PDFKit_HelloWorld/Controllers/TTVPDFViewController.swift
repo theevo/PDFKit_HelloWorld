@@ -88,7 +88,9 @@ class TTVPDFViewController: UIViewController, UITextFieldDelegate {
             guard let body = alert.textFields?.first?.text,
                 !body.isEmpty else { return }
             
-            self.addAnnotation(text: body, pdfPage: page, pdfPoint: point)
+            
+            let annotation = PDFAnnotationController.create(text: body, pdfPage: page, pdfPoint: point)
+            self.addToUndo(annotation)
             
 //            self.annotationText = body
             
@@ -109,18 +111,32 @@ class TTVPDFViewController: UIViewController, UITextFieldDelegate {
 
 // MARK: - Undo & Redo
 extension TTVPDFViewController {
-    func addAnnotation(text: String, pdfPage: PDFPage, pdfPoint: CGPoint) {
-        let annotation = PDFAnnotationController.create(text: text, pdfPage: pdfPage, pdfPoint: pdfPoint)
+    func addToUndo(_ annotation: PDFAnnotation) {
         
         undoManager?.registerUndo(withTarget: self, handler: { (selfTarget) in
-            selfTarget.removeAnnotation(annotation: annotation)
+            selfTarget.removeAnnotation(annotation)
         })
-        undoManager?.setActionName("\(text.count > 10 ? text.prefix(7) + "..." : text )")
+        undoManager?.setActionName(annotation.contents?.truncateIfNeeded() ?? "annotation")
     }
     
-    func removeAnnotation(annotation: PDFAnnotation) {
-        guard let page = annotation.page else { return }
+    func removeAnnotation(_ annotation: PDFAnnotation) {
         
-        page.removeAnnotation(annotation)
+        undoManager?.registerUndo(withTarget: self, handler: { (selfTarget) in
+            selfTarget.addToUndo(annotation)
+            self.pdfView.layoutDocumentView()
+        })
+        undoManager?.setActionName(annotation.contents?.truncateIfNeeded() ?? "annotation")
+        
+        PDFAnnotationController.destroy(annotation)
+    }
+    
+    func redraw() {
+//        pdfView.layoutDocumentView()
+    }
+}
+
+extension String {
+    func truncateIfNeeded() -> String {
+        return "\(self.count > 10 ? self.prefix(7) + "..." : self )"
     }
 }

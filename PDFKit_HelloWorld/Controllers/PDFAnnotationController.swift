@@ -65,7 +65,9 @@ class PDFAnnotationController {
         return annotation
     }
     
-    static func destroy() {
+    static func destroy(_ annotation: PDFAnnotation) {
+        guard let page = annotation.page else { return }
         
+        page.removeAnnotation(annotation)
     }
 }
