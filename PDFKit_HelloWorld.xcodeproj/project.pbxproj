@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		AC0B111E2473109E00792E8A /* WordGenerator.swift in Sources */ = {isa = PBXBuildFile; fileRef = AC0B111D2473109E00792E8A /* WordGenerator.swift */; };
 		AC0B1120247310ED00792E8A /* words in Resources */ = {isa = PBXBuildFile; fileRef = AC0B111F247310ED00792E8A /* words */; };
+		AC40FF07249C558100B40C17 /* PDFAnnotationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = AC40FF06249C558100B40C17 /* PDFAnnotationController.swift */; };
 		AC8B6C672444F11F002A6F28 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = AC8B6C662444F11F002A6F28 /* AppDelegate.swift */; };
 		AC8B6C692444F11F002A6F28 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = AC8B6C682444F11F002A6F28 /* SceneDelegate.swift */; };
 		AC8B6C6E2444F11F002A6F28 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = AC8B6C6C2444F11F002A6F28 /* Main.storyboard */; };
@@ -22,6 +23,7 @@
 /* Begin PBXFileReference section */
 		AC0B111D2473109E00792E8A /* WordGenerator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WordGenerator.swift; sourceTree = "<group>"; };
 		AC0B111F247310ED00792E8A /* words */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = words; sourceTree = "<group>"; };
+		AC40FF06249C558100B40C17 /* PDFAnnotationController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PDFAnnotationController.swift; sourceTree = "<group>"; };
 		AC8B6C632444F11F002A6F28 /* PDFKit_HelloWorld.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = PDFKit_HelloWorld.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		AC8B6C662444F11F002A6F28 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		AC8B6C682444F11F002A6F28 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -106,6 +108,7 @@
 		AC8B6C7D2444F49E002A6F28 /* Controllers */ = {
 			isa = PBXGroup;
 			children = (
+				AC40FF06249C558100B40C17 /* PDFAnnotationController.swift */,
 				AC8B6C7E2444F88B002A6F28 /* TTVPDFViewController.swift */,
 			);
 			path = Controllers;
@@ -197,6 +200,7 @@
 				AC8B6C672444F11F002A6F28 /* AppDelegate.swift in Sources */,
 				ACC405BC2447983F0044D6C3 /* CGPointExtension.swift in Sources */,
 				AC8B6C692444F11F002A6F28 /* SceneDelegate.swift in Sources */,
+				AC40FF07249C558100B40C17 /* PDFAnnotationController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
