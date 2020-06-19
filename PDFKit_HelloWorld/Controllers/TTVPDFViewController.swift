@@ -11,7 +11,11 @@ import PDFKit
 
 class TTVPDFViewController: UIViewController, UITextFieldDelegate {
     
+    // MARK: - Private Properties
     
+    let dictionaryOn: Bool = false
+    let xOffsetPDFAnnotation: CGFloat = -3.0
+    let yOffsetPDFAnnotation: CGFloat = -5.0
     
     
     // MARK: - Outlets
@@ -53,7 +57,9 @@ class TTVPDFViewController: UIViewController, UITextFieldDelegate {
             pdfPageLocationLabel.text = "\(pageNumber)"
         }
         
-        let convertedPoint = pdfView.convert(tapLocation, to: tappedPDFPage)
+        var convertedPoint = pdfView.convert(tapLocation, to: tappedPDFPage)
+        convertedPoint.x += xOffsetPDFAnnotation
+        convertedPoint.y += yOffsetPDFAnnotation
         
         pdfViewLocationLabel.text = "\(convertedPoint.prettyPrint())"
         pdfViewLocationLabel.alpha = 1.0
@@ -62,7 +68,7 @@ class TTVPDFViewController: UIViewController, UITextFieldDelegate {
     }
     
     func loadSamplePDF() {
-        if let path = Bundle.main.path(forResource: "sample", ofType: "pdf") { // read file name sample.pdf
+        if let path = Bundle.main.path(forResource: "f1040", ofType: "pdf") {
             let url = URL(fileURLWithPath: path)
             if let pdfDocument = PDFDocument(url: url) {
                 pdfView.autoScales = true
@@ -79,7 +85,7 @@ class TTVPDFViewController: UIViewController, UITextFieldDelegate {
         
         alert.addTextField { (textField) in
             textField.delegate = self
-            textField.text = WordGenerator.shared.gimme()
+            textField.text = self.dictionaryOn ? WordGenerator.shared.gimme() : ""
             textField.autocorrectionType = .no
             textField.autocapitalizationType = .sentences
         }
